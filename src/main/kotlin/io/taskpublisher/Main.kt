@@ -52,7 +52,7 @@ suspend fun publishTask(repository: TaskRepository) {
 }
 
 fun configureDatabases() {
-    val url = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:postgresql://localhost:5432/taskrunner_db"
+    val url = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:postgresql://localhost:5432/taskrunner_db?user=taskrunner_readwriter&password=xfdz8t-mds-V"
     Database.connect(url)
 }
 
