@@ -1,5 +1,7 @@
 val postgresql_driver_version: String by project
 val exposed_version: String by project
+val slf4j_version: String by project
+val logback_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -14,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.slf4j:slf4j-api:$slf4j_version")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation(kotlin("test"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
