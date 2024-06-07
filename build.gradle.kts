@@ -29,9 +29,23 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(17)
 }
 
 application {
     mainClass.set("io.taskpublisher.MainKt")
+}
+
+tasks.jar {
+    manifest { attributes["Main-Class"] = application.mainClass } // Provided we set it up in the application plugin configuration
+    val dependencies = configurations
+        .runtimeClasspath
+        .get()
+        .map(::zipTree) // OR .map { zipTree(it) }
+    from(dependencies)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks {
+    create("stage").dependsOn("installDist")
 }

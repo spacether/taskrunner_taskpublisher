@@ -24,11 +24,14 @@ suspend fun publishTask(repository: TaskRepository) {
     val hour = now.hour
     val minute = now.minute
     val tasks = repository.queryTasks(hour, minute)
-    print(tasks)
-    print("I ran. hour = ${hour} minute=${minute} \n")
+    println(tasks)
+    println("I ran. hour = ${hour} minute=${minute} \n")
 
     val factory = ConnectionFactory()
-    factory.host = "localhost"
+    val uri = System.getenv("CLOUDAMQP_URL") ?: "amqp://guest:guest@localhost"
+    factory.setUri(uri);
+    factory.setRequestedHeartbeat(30);
+    factory.setConnectionTimeout(30);
     val connection = factory.newConnection()
     val channel = connection.createChannel()
 
@@ -49,11 +52,8 @@ suspend fun publishTask(repository: TaskRepository) {
 }
 
 fun configureDatabases() {
-    Database.connect(
-        "jdbc:postgresql://localhost:5432/taskrunner_db",
-        user = "taskrunner_readwriter",
-        password = "xfdz8t-mds-V"
-    )
+    val url = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:postgresql://localhost:5432/taskrunner_db"
+    Database.connect(url)
 }
 
 suspend fun main() {
