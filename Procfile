@@ -1,1 +1,1 @@
-web: java -jar build/libs/taskpublisher.jar
+worker: java -jar build/libs/taskpublisher.jar
